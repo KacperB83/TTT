@@ -1,0 +1,2 @@
+com/myProject/game/TTT/TTT.java
+ com.myProject.game.TTT.TTT
