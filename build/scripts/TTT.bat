@@ -86,7 +86,7 @@ set CLASSPATH=%APP_HOME%\lib\TTT-1.0-SNAPSHOT.jar;%APP_HOME%\lib\javafx-controls
 
 
 @rem Execute TTT
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %TTT_OPTS%  -classpath "%CLASSPATH%" com.myProject.game.TTT %CMD_LINE_ARGS%
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %TTT_OPTS%  -classpath "%CLASSPATH%" com.myProject.game.TTT.TTT %CMD_LINE_ARGS%
 
 :end
 @rem End local scope for the variables with windows NT shell
