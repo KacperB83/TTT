@@ -22,7 +22,10 @@ public class WhoHaveWon {
 
         Button restart = new Button();
         restart.setText("Restart Game");
+        //restart.setOnAction(event -> TTT.);
         restart.setOnAction(event -> window.close());
+
+
         VBox layout = new VBox(20);
         layout.getChildren().addAll(label, restart);
         layout.setAlignment(Pos.CENTER);

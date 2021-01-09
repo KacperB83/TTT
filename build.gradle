@@ -17,5 +17,8 @@ repositories {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/fr.avianey/minimax4j
+    compile group: 'fr.avianey', name: 'minimax4j', version: '1.0.0'
+
 
 }

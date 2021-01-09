@@ -1,4 +1,0 @@
-com/myProject/game/TTT/TTT.java
- com.myProject.game.TTT.TTT
-com/myProject/game/TTT/WhoHaveWon.java
- com.myProject.game.TTT.WhoHaveWon
