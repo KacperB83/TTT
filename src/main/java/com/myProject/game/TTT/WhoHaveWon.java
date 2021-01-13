@@ -1,3 +1,4 @@
+/*
 package com.myProject.game.TTT;
 
 import javafx.geometry.Pos;
@@ -9,9 +10,10 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class WhoHaveWon {
+public class WhoHaveWon extends TTT{
 
-    public static void displayWhosTheWinner (String message) {
+    public static void displayWhosTheWinner(String message) {
+
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setMinWidth(200);
@@ -22,9 +24,16 @@ public class WhoHaveWon {
 
         Button restart = new Button();
         restart.setText("Restart Game");
-        //restart.setOnAction(event -> TTT.);
-        restart.setOnAction(event -> window.close());
 
+        restart.setOnAction(event -> {
+            TTT ttt = new TTT();
+            try {
+                ttt.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        restart.setOnAction(event -> window.close());
 
         VBox layout = new VBox(20);
         layout.getChildren().addAll(label, restart);
@@ -35,3 +44,4 @@ public class WhoHaveWon {
         window.showAndWait();
     }
 }
+*/
