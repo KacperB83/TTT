@@ -1,5 +1,6 @@
 package com.myProject.game.TTT;
 
+import com.sun.javafx.scene.shape.LineHelper;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -23,9 +24,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class TTT extends Application {
 
@@ -36,7 +35,8 @@ public class TTT extends Application {
     private Tile[][] board = new Tile[3][3];
     private List<Combo> combos = new ArrayList<>();
     
-    public static StackPane root;
+    public StackPane root;
+
     private Pane tileRoot;
 
     private Parent createContent() {
@@ -52,7 +52,7 @@ public class TTT extends Application {
                 Tile tile = new Tile();
                 tile.setTranslateX(j * 200);
                 tile.setTranslateY(i* 200);
-
+                tile.text.setText("");
                 tileRoot.getChildren().add(tile);
 
                 board[j][i] = tile;
@@ -115,36 +115,72 @@ public class TTT extends Application {
         tileRoot.getChildren().add(line);
 
         Timeline timeline = new Timeline();
-        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1),
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(2),
                 new KeyValue(line.endXProperty(), combo.tiles[2].getCenterX()),
                 new KeyValue(line.endYProperty(), combo.tiles[2].getCenterY())));
         timeline.play();
+
+        timeline.setOnFinished(event -> tileRoot.getChildren().remove(line));
     }
 
     public void computerMove() {
-        /*for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                Tile b = board[j][i];
-                if (b.equals("X")&&board[j+1][i+1].getValue().isEmpty()) {
-                board[1 + j][1 + i].drawO();
-                playerTurnX = true;
-                break;
-            } else {*/
-        Random random = new Random();
+        boolean bContainsO = false;
+        for (Tile[] row : board) {
+            for (Tile t : row) {
+                if (t.getValue().equals("O")) {
+                    bContainsO = true;
+                }
+            }
+        }
 
-        int x = random.nextInt(3);
-        int y = random.nextInt(3);
+        if (bContainsO) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (board[j][i].getValue().isEmpty()&&board[j + 1][i + 1].getValue().equals("O")||
+                            board[j][i].getValue().isEmpty()&&board[j][i + 1].getValue().equals("O")||
+                            board[j][i].getValue().isEmpty()&&board[j + 1][i].getValue().equals("O")||
+                            board[j][i].getValue().isEmpty()&&board[j - 1][i - 1].getValue().equals("O")||
+                            board[j][i].getValue().isEmpty()&&board[j - 1][i].getValue().equals("O")||
+                            board[j][i].getValue().isEmpty()&&board[j][i - 1].getValue().equals("O")
+                    ) {
+                        board[j][i].drawO();
+                        choice = board[j][i].getValue();
+                        checkState(choice);
+                        playerTurnX = true;
+                        break;
 
-        if (board[x][y].getValue().isEmpty()){
-            board[x][y].drawO();
-            choice = board[x][y].getValue();
-            checkState(choice);
-            playerTurnX = true;
+                    } else {
+                        Random random = new Random();
 
+                        int x = random.nextInt(3);
+                        int y = random.nextInt(3);
+
+                        if (board[x][y].getValue().isEmpty()) {
+                            board[x][y].drawO();
+                            choice = board[x][y].getValue();
+                            checkState(choice);
+                            playerTurnX = true;
+                            break;
+                        }
+                    }
+                }
+            }
         } else {
-            computerMove();
+            Random random = new Random();
+
+            int x = random.nextInt(3);
+            int y = random.nextInt(3);
+
+            if (board[x][y].getValue().isEmpty()) {
+                board[x][y].drawO();
+                choice = board[x][y].getValue();
+                checkState(choice);
+                playerTurnX = true;
+
+            }
         }
     }
+
 
     public class Combo {
         private Tile[] tiles;
@@ -170,6 +206,7 @@ public class TTT extends Application {
             border.setStroke(Color.BLACK);
 
             text.setFont(Font.font("Arial", FontWeight.EXTRA_LIGHT, 76));
+            text.setFill(Color.BLACK);
 
             setAlignment(Pos.CENTER);
             getChildren().addAll(border, text);
@@ -184,7 +221,7 @@ public class TTT extends Application {
                         playerTurnX = false;
                         checkState(choice);
                     }
-                    if (playable) {
+                    if (playable&&playerTurnX==false) {
                         computerMove();
                     }
                 }
@@ -206,8 +243,20 @@ public class TTT extends Application {
         public double getCenterY() {return getTranslateY() + 100;
         }
     }
+    public void reset(){
+        playerTurnX = true;
+        playable = true;
 
-    public static void displayWhosTheWinner(String message) {
+        for(int i = 0; i < 3; i++)
+        {
+            for(int j = 0; j < 3; j++)
+            {
+                board[i][j].text.setText("");
+            }
+        }
+    }
+
+    public void displayWhosTheWinner(String message) {
 
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -221,14 +270,9 @@ public class TTT extends Application {
         restart.setText("Restart Game");
 
         restart.setOnAction(event -> {
-            TTT ttt = new TTT();
-            try {
-                ttt.start(new Stage());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            reset();
+            window.close();
         });
-        restart.setOnAction(event -> window.close());
 
         VBox layout = new VBox(20);
         layout.getChildren().addAll(label, restart);
