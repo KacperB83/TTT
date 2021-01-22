@@ -1,6 +1,5 @@
 package com.myProject.game.TTT;
 
-import com.sun.javafx.scene.shape.LineHelper;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -34,7 +33,7 @@ public class TTT extends Application {
 
     private Tile[][] board = new Tile[3][3];
     private List<Combo> combos = new ArrayList<>();
-    
+
     public StackPane root;
 
     private Pane tileRoot;
@@ -136,13 +135,27 @@ public class TTT extends Application {
         if (bContainsO) {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    if (board[j][i].getValue().isEmpty()&&board[j + 1][i + 1].getValue().equals("O")||
-                            board[j][i].getValue().isEmpty()&&board[j][i + 1].getValue().equals("O")||
-                            board[j][i].getValue().isEmpty()&&board[j + 1][i].getValue().equals("O")||
-                            board[j][i].getValue().isEmpty()&&board[j - 1][i - 1].getValue().equals("O")||
-                            board[j][i].getValue().isEmpty()&&board[j - 1][i].getValue().equals("O")||
-                            board[j][i].getValue().isEmpty()&&board[j][i - 1].getValue().equals("O")
-                    ) {
+                    if (board[j][i].getValue().isEmpty() && board[j + 1][i + 1].getValue().equals("O") ||
+                            board[j][i].getValue().isEmpty() && board[j - 1][i - 1].getValue().equals("O")) {
+
+                        board[j][i].drawO();
+                        choice = board[j][i].getValue();
+                        checkState(choice);
+                        playerTurnX = true;
+                        break;
+                    }
+                    if (board[j][i].getValue().isEmpty() && board[j][i + 1].getValue().equals("O") ||
+                            board[j][i].getValue().isEmpty() && board[j][i - 1].getValue().equals("O")) {
+
+                        board[j][i].drawO();
+                        choice = board[j][i].getValue();
+                        checkState(choice);
+                        playerTurnX = true;
+                        break;
+                    }
+                    if (board[j][i].getValue().isEmpty() && board[j + 1][i].getValue().equals("O") ||
+                            board[j][i].getValue().isEmpty() && board[j - 1][i].getValue().equals("O")) {
+
                         board[j][i].drawO();
                         choice = board[j][i].getValue();
                         checkState(choice);
@@ -150,37 +163,29 @@ public class TTT extends Application {
                         break;
 
                     } else {
-                        Random random = new Random();
-
-                        int x = random.nextInt(3);
-                        int y = random.nextInt(3);
-
-                        if (board[x][y].getValue().isEmpty()) {
-                            board[x][y].drawO();
-                            choice = board[x][y].getValue();
-                            checkState(choice);
-                            playerTurnX = true;
-                            break;
-                        }
+                        randomMove();
+                        break;
                     }
                 }
             }
         } else {
-            Random random = new Random();
-
-            int x = random.nextInt(3);
-            int y = random.nextInt(3);
-
-            if (board[x][y].getValue().isEmpty()) {
-                board[x][y].drawO();
-                choice = board[x][y].getValue();
-                checkState(choice);
-                playerTurnX = true;
-
-            }
+            randomMove();
         }
     }
 
+    public void randomMove() {
+        Random random = new Random();
+
+        int x = random.nextInt(3);
+        int y = random.nextInt(3);
+
+        if (board[x][y].getValue().isEmpty()) {
+            board[x][y].drawO();
+            choice = board[x][y].getValue();
+            checkState(choice);
+            playerTurnX = true;
+        }
+    }
 
     public class Combo {
         private Tile[] tiles;
