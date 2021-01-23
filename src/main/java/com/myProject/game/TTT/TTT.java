@@ -57,11 +57,11 @@ public class TTT extends Application {
                 board[j][i] = tile;
             }
         }
-        for (int y = 0; y < board.length; y++) {
+        for (int y = 0; y < 3; y++) {
             combos.add(new Combo(board[0][y], board[1][y], board[2][y]));
         }
         //pion
-        for (int x = 0; x < board.length; x++) {
+        for (int x = 0; x < 3; x++) {
             combos.add(new Combo(board[x][0], board[x][1], board[x][2]));
         }
         //przekątne
@@ -122,84 +122,6 @@ public class TTT extends Application {
         timeline.setOnFinished(event -> tileRoot.getChildren().remove(line));
     }
 
-    public void computerMove() {
-        boolean bContainsO = false;
-        for (Tile[] row : board) {
-            for (Tile t : row) {
-                if (t.getValue().equals("O")) {
-                    bContainsO = true;
-                }
-            }
-        }
-
-        if (bContainsO) {
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (board[j][i].getValue().isEmpty() && board[j + 1][i + 1].getValue().equals("O") ||
-                            board[j][i].getValue().isEmpty() && board[j - 1][i - 1].getValue().equals("O")) {
-
-                        board[j][i].drawO();
-                        choice = board[j][i].getValue();
-                        checkState(choice);
-                        playerTurnX = true;
-                        break;
-                    }
-                    if (board[j][i].getValue().isEmpty() && board[j][i + 1].getValue().equals("O") ||
-                            board[j][i].getValue().isEmpty() && board[j][i - 1].getValue().equals("O")) {
-
-                        board[j][i].drawO();
-                        choice = board[j][i].getValue();
-                        checkState(choice);
-                        playerTurnX = true;
-                        break;
-                    }
-                    if (board[j][i].getValue().isEmpty() && board[j + 1][i].getValue().equals("O") ||
-                            board[j][i].getValue().isEmpty() && board[j - 1][i].getValue().equals("O")) {
-
-                        board[j][i].drawO();
-                        choice = board[j][i].getValue();
-                        checkState(choice);
-                        playerTurnX = true;
-                        break;
-
-                    } else {
-                        randomMove();
-                        break;
-                    }
-                }
-            }
-        } else {
-            randomMove();
-        }
-    }
-
-    public void randomMove() {
-        Random random = new Random();
-
-        int x = random.nextInt(3);
-        int y = random.nextInt(3);
-
-        if (board[x][y].getValue().isEmpty()) {
-            board[x][y].drawO();
-            choice = board[x][y].getValue();
-            checkState(choice);
-            playerTurnX = true;
-        }
-    }
-
-    public class Combo {
-        private Tile[] tiles;
-        public Combo (Tile... tiles) {
-            this.tiles = tiles;
-        }
-
-        public boolean isComplete() {
-            return  !tiles[0].getValue().isEmpty() &&
-                    tiles[0].getValue().equals(tiles[1].getValue()) &&
-                    tiles[0].getValue().equals(tiles[2].getValue());
-        }
-    }
-
     public class Tile extends StackPane {
 
         private Text text = new Text();
@@ -219,14 +141,14 @@ public class TTT extends Application {
             setOnMouseClicked(event -> {
                 if (!playable) return;
 
-                if (event.getButton() == MouseButton.PRIMARY && getValue().isEmpty()) {
+                if (event.getButton() == MouseButton.PRIMARY) {
                     if (playerTurnX) {
                         drawX();
                         choice = getValue();
                         playerTurnX = false;
                         checkState(choice);
                     }
-                    if (playable&&playerTurnX==false) {
+                    if (playable) {
                         computerMove();
                     }
                 }
@@ -248,6 +170,171 @@ public class TTT extends Application {
         public double getCenterY() {return getTranslateY() + 100;
         }
     }
+
+    public void computerMove() {
+
+        if (board[0][0].getValue().isEmpty() && checkLeftUp()) {
+
+            board[0][0].drawO();
+            choice = board[0][0].getValue();
+            checkState(choice);
+            playerTurnX = true;
+        }
+        if (board[0][1].getValue().isEmpty() && checkCentreUp()) {
+
+            board[0][1].drawO();
+            choice = board[0][1].getValue();
+            checkState(choice);
+            playerTurnX = true;
+        }
+        if (board[0][2].getValue().isEmpty() && checkRightUp()) {
+
+            board[0][2].drawO();
+            choice = board[0][2].getValue();
+            checkState(choice);
+            playerTurnX = true;
+        }
+        if (board[1][0].getValue().isEmpty() && checkLeftCentre()) {
+
+            board[1][0].drawO();
+            choice = board[1][0].getValue();
+            checkState(choice);
+            playerTurnX = true;
+        }
+        if (board[1][1].getValue().isEmpty() && checkCentreCentre()) {
+
+            board[1][1].drawO();
+            choice = board[1][1].getValue();
+            checkState(choice);
+            playerTurnX = true;
+        }
+        if (board[1][2].getValue().isEmpty() && checkRightCentre()) {
+
+            board[1][2].drawO();
+            choice = board[1][2].getValue();
+            checkState(choice);
+            playerTurnX = true;
+        }
+        if (board[2][0].getValue().isEmpty() && checkLeftBottom()) {
+
+            board[2][0].drawO();
+            choice = board[2][0].getValue();
+            checkState(choice);
+            playerTurnX = true;
+        }
+        if (board[2][1].getValue().isEmpty() && checkCentreBottom()) {
+
+            board[2][1].drawO();
+            choice = board[2][1].getValue();
+            checkState(choice);
+            playerTurnX = true;
+        }
+        if (board[2][2].getValue().isEmpty() && checkRightBottom()) {
+
+            board[2][2].drawO();
+            choice = board[2][2].getValue();
+            checkState(choice);
+        }
+        else {
+            randomMove();
+        }
+    }
+    public boolean checkLeftUp(){
+        if(board[1][0].getValue().equals("O") ||
+                board[0][1].getValue().equals("O") || board[1][1].getValue().equals("O")) {
+            return true;
+        }
+        return false;
+    }
+    public boolean checkCentreUp(){
+        if(board[0][0].getValue().equals("O") ||
+                board[1][1].getValue().equals("O") || board[0][2].getValue().equals("O")) {
+            return true;
+        }
+        return false;
+    }
+    public boolean checkRightUp(){
+        if(board[0][1].getValue().equals("O") ||
+                board[1][1].getValue().equals("O") || board[1][2].getValue().equals("O")) {
+            return true;
+        }
+        return false;
+    }
+    public boolean checkLeftCentre(){
+        if(board[0][0].getValue().equals("O") ||
+                board[1][1].getValue().equals("O") || board[0][2].getValue().equals("O")) {
+            return true;
+        }
+        return false;
+    }
+    public boolean checkCentreCentre(){
+        if(board[0][0].getValue().equals("O") || board[0][1].getValue().equals("O") || board[0][2].getValue().equals("O") ||
+                board[1][0].getValue().equals("O") || board[1][2].getValue().equals("O") ||
+                board[2][0].getValue().equals("O") || board[2][1].getValue().equals("O") || board[2][2].getValue().equals("O")
+        ) {
+            return true;
+        }
+        return false;
+    }
+    public boolean checkRightCentre(){
+        if(board[0][0].getValue().equals("O") ||
+                board[1][1].getValue().equals("O") || board[0][2].getValue().equals("O")) {
+            return true;
+        }
+        return false;
+    }
+    public boolean checkLeftBottom(){
+        if(board[1][0].getValue().equals("O") ||
+                board[1][1].getValue().equals("O") || board[2][1].getValue().equals("O")) {
+            return true;
+        }
+        return false;
+    }
+    public boolean checkCentreBottom(){
+        if(board[2][0].getValue().equals("O") ||
+                board[1][1].getValue().equals("O") || board[2][2].getValue().equals("O")) {
+            return true;
+        }
+        return false;
+    }
+    public boolean checkRightBottom(){
+        if(board[1][0].getValue().equals("O") ||
+                board[1][1].getValue().equals("O") || board[2][1].getValue().equals("O")) {
+            return true;
+        }
+        return false;
+    }
+
+    public void randomMove() {
+        Random random = new Random();
+
+        int x = random.nextInt(3);
+        int y = random.nextInt(3);
+
+        if (board[x][y].getValue().isEmpty()) {
+            board[x][y].drawO();
+            choice = board[x][y].getValue();
+            checkState(choice);
+            playerTurnX = true;
+        }
+        else {
+            randomMove();
+        }
+    }
+
+    public class Combo {
+        private Tile[] tiles;
+        public Combo (Tile... tiles) {
+            this.tiles = tiles;
+        }
+
+        public boolean isComplete() {
+            return  !tiles[0].getValue().isEmpty() &&
+                    tiles[0].getValue().equals(tiles[1].getValue()) &&
+                    tiles[0].getValue().equals(tiles[2].getValue());
+        }
+    }
+
     public void reset(){
         playerTurnX = true;
         playable = true;
