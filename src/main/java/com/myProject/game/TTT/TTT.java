@@ -247,8 +247,8 @@ public class TTT extends Application {
     }
     public boolean checkLeftUp(){
         if(board[1][0].getValue().equals("O")
-                || board[0][1].getValue().equals("O")
-                || board[1][1].getValue().equals("O")) {
+                || board[1][1].getValue().equals("O")
+                || board[0][1].getValue().equals("O")) {
             return true;
         }
         return false;
