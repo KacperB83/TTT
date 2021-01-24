@@ -143,10 +143,12 @@ public class TTT extends Application {
 
                 if (event.getButton() == MouseButton.PRIMARY) {
                     if (playerTurnX) {
-                        drawX();
-                        choice = getValue();
-                        playerTurnX = false;
-                        checkState(choice);
+                        if(getValue().isEmpty()) {
+                            drawX();
+                            choice = getValue();
+                            playerTurnX = false;
+                            checkState(choice);
+                        }
                     }
                 }
 
@@ -285,9 +287,9 @@ public class TTT extends Application {
         return false;
     }
     public boolean checkRightCentre(){
-        if(board[0][0].getValue().equals("O")
+        if(board[0][2].getValue().equals("O")
                 || board[1][1].getValue().equals("O")
-                || board[0][2].getValue().equals("O")) {
+                || board[2][2].getValue().equals("O")) {
             return true;
         }
         return false;
@@ -309,7 +311,7 @@ public class TTT extends Application {
         return false;
     }
     public boolean checkRightBottom(){
-        if(board[1][0].getValue().equals("O")
+        if(board[1][2].getValue().equals("O")
                 || board[1][1].getValue().equals("O")
                 || board[2][1].getValue().equals("O")) {
             return true;
