@@ -148,11 +148,14 @@ public class TTT extends Application {
                         playerTurnX = false;
                         checkState(choice);
                     }
+                }
+
+                if (playerTurnX == false)
                     if (playable) {
                         computerMove();
                     }
-                }
             });
+
         }
 
         private void drawX() {text.setText("X");
@@ -172,134 +175,143 @@ public class TTT extends Application {
     }
 
     public void computerMove() {
-
-        if (board[0][0].getValue().isEmpty() && checkLeftUp()) {
+        playerTurnX = false;
+        if (playerTurnX==false && board[0][0].getValue().isEmpty() && checkLeftUp()) {
 
             board[0][0].drawO();
             choice = board[0][0].getValue();
             checkState(choice);
             playerTurnX = true;
         }
-        if (board[0][1].getValue().isEmpty() && checkCentreUp()) {
+        if (playerTurnX==false && board[0][1].getValue().isEmpty() && checkCentreUp()) {
 
             board[0][1].drawO();
             choice = board[0][1].getValue();
             checkState(choice);
             playerTurnX = true;
         }
-        if (board[0][2].getValue().isEmpty() && checkRightUp()) {
+        if (playerTurnX==false && board[0][2].getValue().isEmpty() && checkRightUp()) {
 
             board[0][2].drawO();
             choice = board[0][2].getValue();
             checkState(choice);
             playerTurnX = true;
         }
-        if (board[1][0].getValue().isEmpty() && checkLeftCentre()) {
+        if (playerTurnX==false && board[1][0].getValue().isEmpty() && checkLeftCentre()) {
 
             board[1][0].drawO();
             choice = board[1][0].getValue();
             checkState(choice);
             playerTurnX = true;
         }
-        if (board[1][1].getValue().isEmpty() && checkCentreCentre()) {
+        if (playerTurnX==false && board[1][1].getValue().isEmpty() && checkCentreCentre()) {
 
             board[1][1].drawO();
             choice = board[1][1].getValue();
             checkState(choice);
             playerTurnX = true;
         }
-        if (board[1][2].getValue().isEmpty() && checkRightCentre()) {
+        if (playerTurnX==false && board[1][2].getValue().isEmpty() && checkRightCentre()) {
 
             board[1][2].drawO();
             choice = board[1][2].getValue();
             checkState(choice);
             playerTurnX = true;
         }
-        if (board[2][0].getValue().isEmpty() && checkLeftBottom()) {
+        if (playerTurnX==false && board[2][0].getValue().isEmpty() && checkLeftBottom()) {
 
             board[2][0].drawO();
             choice = board[2][0].getValue();
             checkState(choice);
             playerTurnX = true;
         }
-        if (board[2][1].getValue().isEmpty() && checkCentreBottom()) {
+        if (playerTurnX==false && board[2][1].getValue().isEmpty() && checkCentreBottom()) {
 
             board[2][1].drawO();
             choice = board[2][1].getValue();
             checkState(choice);
             playerTurnX = true;
         }
-        if (board[2][2].getValue().isEmpty() && checkRightBottom()) {
+        if (playerTurnX==false && board[2][2].getValue().isEmpty() && checkRightBottom()) {
 
             board[2][2].drawO();
             choice = board[2][2].getValue();
             checkState(choice);
+            playerTurnX = true;
         }
         else {
             randomMove();
         }
     }
     public boolean checkLeftUp(){
-        if(board[1][0].getValue().equals("O") ||
-                board[0][1].getValue().equals("O") || board[1][1].getValue().equals("O")) {
+        if(board[1][0].getValue().equals("O")
+                || board[0][1].getValue().equals("O")
+                || board[1][1].getValue().equals("O")) {
             return true;
         }
         return false;
     }
     public boolean checkCentreUp(){
-        if(board[0][0].getValue().equals("O") ||
-                board[1][1].getValue().equals("O") || board[0][2].getValue().equals("O")) {
+        if(board[0][0].getValue().equals("O")
+                || board[1][1].getValue().equals("O")
+                || board[0][2].getValue().equals("O")) {
             return true;
         }
         return false;
     }
     public boolean checkRightUp(){
-        if(board[0][1].getValue().equals("O") ||
-                board[1][1].getValue().equals("O") || board[1][2].getValue().equals("O")) {
+        if(board[0][1].getValue().equals("O")
+                || board[1][1].getValue().equals("O")
+                || board[1][2].getValue().equals("O")) {
             return true;
         }
         return false;
     }
     public boolean checkLeftCentre(){
-        if(board[0][0].getValue().equals("O") ||
-                board[1][1].getValue().equals("O") || board[0][2].getValue().equals("O")) {
+        if(board[0][0].getValue().equals("O")
+                || board[1][1].getValue().equals("O")
+                || board[2][0].getValue().equals("O")) {
             return true;
         }
         return false;
     }
     public boolean checkCentreCentre(){
-        if(board[0][0].getValue().equals("O") || board[0][1].getValue().equals("O") || board[0][2].getValue().equals("O") ||
-                board[1][0].getValue().equals("O") || board[1][2].getValue().equals("O") ||
-                board[2][0].getValue().equals("O") || board[2][1].getValue().equals("O") || board[2][2].getValue().equals("O")
-        ) {
+        if(board[0][0].getValue().equals("O") || board[0][1].getValue().equals("O")
+                || board[0][2].getValue().equals("O") || board[1][0].getValue().equals("O")
+                || board[1][2].getValue().equals("O") || board[2][0].getValue().equals("O")
+                || board[2][1].getValue().equals("O") || board[2][2].getValue().equals("O")) {
             return true;
         }
         return false;
     }
     public boolean checkRightCentre(){
-        if(board[0][0].getValue().equals("O") ||
-                board[1][1].getValue().equals("O") || board[0][2].getValue().equals("O")) {
+        if(board[0][0].getValue().equals("O")
+                || board[1][1].getValue().equals("O")
+                || board[0][2].getValue().equals("O")) {
             return true;
         }
         return false;
     }
     public boolean checkLeftBottom(){
-        if(board[1][0].getValue().equals("O") ||
-                board[1][1].getValue().equals("O") || board[2][1].getValue().equals("O")) {
+        if(board[1][0].getValue().equals("O")
+                || board[1][1].getValue().equals("O")
+                || board[2][1].getValue().equals("O")) {
             return true;
         }
         return false;
     }
     public boolean checkCentreBottom(){
-        if(board[2][0].getValue().equals("O") ||
-                board[1][1].getValue().equals("O") || board[2][2].getValue().equals("O")) {
+        if(board[2][0].getValue().equals("O")
+                || board[1][1].getValue().equals("O")
+                || board[2][2].getValue().equals("O")) {
             return true;
         }
         return false;
     }
     public boolean checkRightBottom(){
-        if(board[1][0].getValue().equals("O") ||
-                board[1][1].getValue().equals("O") || board[2][1].getValue().equals("O")) {
+        if(board[1][0].getValue().equals("O")
+                || board[1][1].getValue().equals("O")
+                || board[2][1].getValue().equals("O")) {
             return true;
         }
         return false;
@@ -311,15 +323,12 @@ public class TTT extends Application {
         int x = random.nextInt(3);
         int y = random.nextInt(3);
 
-        if (board[x][y].getValue().isEmpty()) {
+        if (playerTurnX==false && board[x][y].getValue().isEmpty()) {
             board[x][y].drawO();
             choice = board[x][y].getValue();
             checkState(choice);
-            playerTurnX = true;
         }
-        else {
-            randomMove();
-        }
+        playerTurnX = true;
     }
 
     public class Combo {
@@ -336,13 +345,10 @@ public class TTT extends Application {
     }
 
     public void reset(){
-        playerTurnX = true;
         playable = true;
-
-        for(int i = 0; i < 3; i++)
-        {
-            for(int j = 0; j < 3; j++)
-            {
+        playerTurnX = true;
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
                 board[i][j].text.setText("");
             }
         }
@@ -362,8 +368,10 @@ public class TTT extends Application {
         restart.setText("Restart Game");
 
         restart.setOnAction(event -> {
-            reset();
             window.close();
+            playable = true;
+            playerTurnX = true;
+            reset();
         });
 
         VBox layout = new VBox(20);
